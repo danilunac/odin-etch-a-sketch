@@ -1,11 +1,11 @@
 const container = document.querySelector('#container');
 
-const gridSize = 16;
+const gridSize = 100;
 const cellSize = 960 / gridSize;
 
 function createCell(parentElement) {
     const cell = document.createElement('div');
-    cell.style.border = '0.5px solid red';
+    cell.style.border = '0.5px solid grey';
     cell.style.width = cellSize + 'px';
     cell.style.height = cellSize + 'px';
     cell.style.margin = '0';
@@ -23,3 +23,7 @@ function generateGrid(size) {
 }
 
 generateGrid(gridSize);
+
+container.addEventListener('mousemove', (e) => {
+    e.target.style.backgroundColor = 'blue';
+})
