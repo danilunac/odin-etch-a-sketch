@@ -10,7 +10,8 @@ html {
 
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 #container {
@@ -19,4 +20,9 @@ body {
     justify-content: center;
     align-items: center;
     width: 960px;
+}
+
+#newGridBtn {
+    flex: auto;
+    margin: 25px;
 }
