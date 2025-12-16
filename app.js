@@ -1,11 +1,15 @@
 const container = document.querySelector('#container');
 
-function getRandomRGBColor() {
-    const red = Math.floor((Math.random() * 256));
-    const green = Math.floor((Math.random() * 256));
-    const blue = Math.floor((Math.random() * 256));
+function getRandomNumber (maxNumber) {
+    return Math.floor(Math.random() * maxNumber);
+}
 
-    const rgbRandomColor = `rgb(${red}, ${green}, ${blue})`;
+function getRandomRGBColor() {
+    const r = getRandomNumber(256);
+    const g = getRandomNumber(256);
+    const b = getRandomNumber(256);
+
+    const rgbRandomColor = `rgb(${r}, ${g}, ${b})`;
 
     return rgbRandomColor;
 }
@@ -25,7 +29,7 @@ function generateGrid() {
 
     function createCell(parentElement) {
         const cell = document.createElement('div');
-        cell.style.border = '0.1px solid grey';
+        cell.style.border = '0.5px solid grey';
         cell.style.width = cellSize + 'px';
         cell.style.height = cellSize + 'px';
         cell.style.margin = '0';
@@ -43,11 +47,36 @@ function generateGrid() {
 
 // Create an event that changes the cell color on mouse hover
 container.addEventListener('mouseover', (e) => {
-    e.target.style.backgroundColor = getRandomRGBColor();
+    const currentTarget = e.target.style;
+    // Set a random background color only if the cell doesn't already have one
+    if (!currentTarget.backgroundColor) {
+        currentTarget.backgroundColor = getRandomRGBColor();
+    }
+    
+    // Increase opacity by 10% on each mouseover
+    if (e.target.style.opacity === '') {
+        e.target.style.opacity = '0.1'
+    } else if (e.target.style.opacity === '0.1') {
+        e.target.style.opacity = '0.2';
+    } else if (e.target.style.opacity === '0.2') {
+        e.target.style.opacity = '0.3';
+    } else if (e.target.style.opacity === '0.3') {
+        e.target.style.opacity = '0.4';
+    } else if (e.target.style.opacity === '0.4') {
+        e.target.style.opacity = '0.5';
+    } else if (e.target.style.opacity === '0.5') {
+        e.target.style.opacity = '0.6';
+    } else if (e.target.style.opacity === '0.6') {
+        e.target.style.opacity = '0.7';
+    } else if (e.target.style.opacity === '0.7') {
+        e.target.style.opacity = '0.8';
+    } else if (e.target.style.opacity === '0.8') {
+        e.target.style.opacity = '0.9';
+    } else {
+        e.target.style.opacity = '1';
+    }   
 });
 
 // Button that creates an event to generate a new grid
 const newGridBtn = document.querySelector('#newGridBtn');
 newGridBtn.addEventListener('click', generateGrid);
-
-
