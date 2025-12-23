@@ -57,7 +57,7 @@ function getRandomNumber (maxNumber) {
 
 function generateGrid() {  
     // Remove cells before generating new grid
-    container.innerHTML = '';
+    container.replaceChildren();
 
     const size = parseInt(prompt('Enter number of cells: '));
     if (isNaN(size) || size < 1 || size > 100) {
