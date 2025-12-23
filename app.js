@@ -1,10 +1,13 @@
+// Selects the grid container from the DOM
 const container = document.querySelector('#container');
 
+// Returns a random integer from 0 up to (but not including) maxNumber
 function getRandomNumber (maxNumber) {
     return Math.floor(Math.random() * maxNumber);
 }
 
-function getRandomRGBAColor() {
+// Generates a random RGBA color with fixed alpha at 0.1
+    function getRandomRGBAColor() {
     const r = getRandomNumber(256);
     const g = getRandomNumber(256);
     const b = getRandomNumber(256);
@@ -15,32 +18,36 @@ function getRandomRGBAColor() {
     return rgbaRandomColor;
 }
 
-function incrementOpacity(rgba) {
+// Increases the alpha value of an RGBA color by 0.1, up to a maximum of 1
+    function incrementOpacity(rgba) {
     const start = '(';
     const end = ')';
     const indexOfStart = rgba.indexOf(start);
     const indexOfEnd = rgba.indexOf(end);
-    const rgbaArray = rgba.slice(indexOfStart + 1, indexOfEnd).split(',');
+    const colorComponents = rgba.slice(indexOfStart + 1, indexOfEnd).split(',');
+
     let red = null;
     let green = null;
     let blue = null;
     let alpha = null;
-    for (let i = 0; i < rgbaArray.length; i++) {
+
+    for (let i = 0; i < colorComponents.length; i++) {
         if (i === 0) {
-            red = parseInt(rgbaArray[i]);
+            red = parseInt(colorComponents[i]);
         } else if (i === 1) {
-            green = parseInt(rgbaArray[i]);
+            green = parseInt(colorComponents[i]);
         } else if (i === 2) {
-            blue = parseInt(rgbaArray[i]);
+            blue = parseInt(colorComponents[i]);
         } else {
-            alpha = parseFloat(rgbaArray[i]);
+            alpha = parseFloat(colorComponents[i]);
         }
     }
 
     let alphaFloat = Number(alpha.toFixed(1));
 
     if (alphaFloat === 1) {
-        return;
+        const newRGBA = `rgba(${red}, ${green}, ${blue}, ${alphaFloat})`;
+        return newRGBA;
     } else if (alphaFloat < 1) {
         alphaFloat += 0.1;
         const newRGBA = `rgba(${red}, ${green}, ${blue}, ${alphaFloat})`;
@@ -63,7 +70,7 @@ function generateGrid() {
 
     function createCell(parentElement) {
         const cell = document.createElement('div');
-        cell.style.border = '0.5px solid grey';
+        cell.style.border = '0.5px solid red';
         cell.style.width = cellSize + 'px';
         cell.style.height = cellSize + 'px';
         cell.style.margin = '0';
@@ -81,13 +88,13 @@ function generateGrid() {
 
 // Create an event that changes the cell color on mouse hover
 container.addEventListener('mouseover', (e) => {
-    let currentTarget = e.target.style;
+    let style = e.target.style;
     // Set a random background color only if the cell doesn't already have one
-    if (!currentTarget.backgroundColor) {
-        currentTarget.backgroundColor = getRandomRGBAColor();
+    if (!style.backgroundColor) {
+        style.backgroundColor = getRandomRGBAColor();
     } else {
-        let rgbaColors = incrementOpacity(currentTarget.backgroundColor);
-        currentTarget.backgroundColor = rgbaColors;
+        let rgbaColors = incrementOpacity(style.backgroundColor);
+        style.backgroundColor = rgbaColors;
     }
 });
 
