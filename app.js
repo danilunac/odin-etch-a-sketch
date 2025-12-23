@@ -4,14 +4,48 @@ function getRandomNumber (maxNumber) {
     return Math.floor(Math.random() * maxNumber);
 }
 
-function getRandomRGBColor() {
+function getRandomRGBAColor() {
     const r = getRandomNumber(256);
     const g = getRandomNumber(256);
     const b = getRandomNumber(256);
+    const a = 0.1;
 
-    const rgbRandomColor = `rgb(${r}, ${g}, ${b})`;
+    const rgbaRandomColor = `rgba(${r}, ${g}, ${b}, ${a})`;
 
-    return rgbRandomColor;
+    return rgbaRandomColor;
+}
+
+function incrementOpacity(rgba) {
+    const start = '(';
+    const end = ')';
+    const indexOfStart = rgba.indexOf(start);
+    const indexOfEnd = rgba.indexOf(end);
+    const rgbaArray = rgba.slice(indexOfStart + 1, indexOfEnd).split(',');
+    let red = null;
+    let green = null;
+    let blue = null;
+    let alpha = null;
+    for (let i = 0; i < rgbaArray.length; i++) {
+        if (i === 0) {
+            red = parseInt(rgbaArray[i]);
+        } else if (i === 1) {
+            green = parseInt(rgbaArray[i]);
+        } else if (i === 2) {
+            blue = parseInt(rgbaArray[i]);
+        } else {
+            alpha = parseFloat(rgbaArray[i]);
+        }
+    }
+
+    let alphaFloat = Number(alpha.toFixed(1));
+
+    if (alphaFloat === 1) {
+        return;
+    } else if (alphaFloat < 1) {
+        alphaFloat += 0.1;
+        const newRGBA = `rgba(${red}, ${green}, ${blue}, ${alphaFloat})`;
+        return newRGBA;
+    } 
 }
 
 function generateGrid() {  
@@ -47,34 +81,14 @@ function generateGrid() {
 
 // Create an event that changes the cell color on mouse hover
 container.addEventListener('mouseover', (e) => {
-    const currentTarget = e.target.style;
+    let currentTarget = e.target.style;
     // Set a random background color only if the cell doesn't already have one
     if (!currentTarget.backgroundColor) {
-        currentTarget.backgroundColor = getRandomRGBColor();
-    }
-    
-    // Increase opacity by 10% on each mouseover
-    if (e.target.style.opacity === '') {
-        e.target.style.opacity = '0.1'
-    } else if (e.target.style.opacity === '0.1') {
-        e.target.style.opacity = '0.2';
-    } else if (e.target.style.opacity === '0.2') {
-        e.target.style.opacity = '0.3';
-    } else if (e.target.style.opacity === '0.3') {
-        e.target.style.opacity = '0.4';
-    } else if (e.target.style.opacity === '0.4') {
-        e.target.style.opacity = '0.5';
-    } else if (e.target.style.opacity === '0.5') {
-        e.target.style.opacity = '0.6';
-    } else if (e.target.style.opacity === '0.6') {
-        e.target.style.opacity = '0.7';
-    } else if (e.target.style.opacity === '0.7') {
-        e.target.style.opacity = '0.8';
-    } else if (e.target.style.opacity === '0.8') {
-        e.target.style.opacity = '0.9';
+        currentTarget.backgroundColor = getRandomRGBAColor();
     } else {
-        e.target.style.opacity = '1';
-    }   
+        let rgbaColors = incrementOpacity(currentTarget.backgroundColor);
+        currentTarget.backgroundColor = rgbaColors;
+    }
 });
 
 // Button that creates an event to generate a new grid
